@@ -1,0 +1,4 @@
+class AI
+  def find_take(move,talon) 
+  end
+end
