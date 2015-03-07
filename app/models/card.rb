@@ -86,6 +86,10 @@ class Card
      div.html_safe
   end
 
+  def self.ids(str_card) 
+    @@SHORT_SUITS.index(str_card[1])*13+@@VALUES.index(str_card[0]) + 1
+  end
+
   def initialize(id)
     @id = id
     @suit_num =  (id-1)/13
