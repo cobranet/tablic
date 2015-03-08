@@ -1,11 +1,13 @@
 class Game < ActiveRecord::Base
   @@TVALUE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14]
   
-  attr_accessor :cards,:moves, :num_of_players
+  attr_accessor :cards,:moves, :num_of_players,:hands,:talon
 
   def initialize(num_of_players,arr=nil)
     @num_of_players = num_of_players
     @cards =[]
+    @hands = []
+    @talon = []
     52.times do |x|
       @cards << x 
     end  
@@ -70,13 +72,14 @@ class Game < ActiveRecord::Base
   end
   
   def deal
-    @num_of_players.times do 
+    @num_of_players.times do |player|
+      @hands << [] 
       6.times do
-        @moves << [@cards.delete_at(0),[]]
+        @hands[player] << @cards.delete_at(0)
       end
     end
     4.times do
-      @moves << [@cards.delete_at(0),[]]
+      @talon << @cards.delete_at(0)
     end
   end
 
@@ -90,7 +93,7 @@ class Game < ActiveRecord::Base
   end
 
   def on_move
-    (@moves.size - @num_of_players*6 - 4) % 4
+    (@moves.size) % 4
   end
  
   
@@ -125,25 +128,19 @@ class Game < ActiveRecord::Base
     (move - @num_of_players*6 - 4) % 4
   end
   
+  
   def state
     hands = [] 
     talon = []
     taken = []
     mov = 0
     @num_of_players.times do |i|
-      hands[i] = []
+      hands[i] = @hands[i].dup
       taken[i] = []
-      6.times do |x|
-        hands[i] << @moves[mov][0]
-        mov = mov + 1
-      end
     end
-    4.times do |i|
-      talon << @moves[mov][0] 
-      mov = mov + 1
-    end
+    talon = @talon.dup
 
-    while (mov < @moves.size  && mov < 2*@num_of_players*6 + 4  ) do
+    while (mov < @moves.size)  do
       talon << @moves[mov][0]
       a = hands[who_was_on_move(mov)].delete(@moves[mov][0])
       @moves[mov][1].each do |card|
@@ -151,9 +148,10 @@ class Game < ActiveRecord::Base
       end
       mov = mov + 1
     end
-    st = { :hands => hands,
-           :talon => talon,
-           :taken => taken }
+    st = { :hands => hands.dup,
+           :talon => talon.dup,
+           :taken => taken.dup,
+           :moves => @moves.dup}
     st       
   end
   
