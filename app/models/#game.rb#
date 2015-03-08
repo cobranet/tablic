@@ -125,6 +125,7 @@ class Game < ActiveRecord::Base
     (move - @num_of_players*6 - 4) % 4
   end
   
+  
   def state
     hands = [] 
     talon = []

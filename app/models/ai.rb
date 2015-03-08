@@ -21,5 +21,5 @@ class AI
     end
     results
   end
-  
+
 end
