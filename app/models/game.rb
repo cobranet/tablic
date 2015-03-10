@@ -160,5 +160,14 @@ class Game < ActiveRecord::Base
            :moves => @moves.dup}
     st       
   end
-  
+  def to_s
+    s = state
+    ret = ""
+    @num_of_players.times do |player| 
+       ret = ret + "PLAYER:[#{player}] : #{s[:hands][player].map {|x| Card.new(x).to_s}.inspect}"
+       ret= ret + "TAKEN : #{s[:taken][player].map { |x| Card.new(x).to_s}.inspect}" 
+    end
+    ret = ret + "TABLE  #{s[:talon].map {|x| Card.new(x).to_s}.inspect}"    
+    ret
+  end
 end
