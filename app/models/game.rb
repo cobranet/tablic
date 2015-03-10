@@ -59,12 +59,11 @@ class Game < ActiveRecord::Base
     result = AI.find_take(Game.tvalue(move),t.map {|x| Game.tvalue(x)})
     taken = [] 
     result.each do |res|
-      taken << [] 
-      res.each do |r|
-        t.each do |index_of_card|
-          taken[taken.size-1] << t.delete_at(index_of_card)
-        end  
-      end
+      tak1 = [] 
+      res.each do |indexof|
+        tak1 << t[indexof]
+      end  
+      taken << tak1   
     end 
     taken
   end

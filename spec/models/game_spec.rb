@@ -21,7 +21,12 @@ RSpec.describe Game, :type => :model do
   it "can get array as param" do
     g = Game.new(4,arr) 
     g.deal
-    g.state 
+    state = g.state 
+    expect(state[:talon].size).to eq(4)
+    expect(state[:hands].size).to eq(g.num_of_players)
+    state[:hands].each do |hand|
+      expect(hand.size).to eq(6)
+    end
   end
   
   
@@ -92,6 +97,10 @@ RSpec.describe Game, :type => :model do
     end
     g.make_play(41)
     g.make_play(36,g.find_take(36)[0])
-    expect(g.score(1)).to eq(1)
-  end
+    expect(g.score(1)).to eq(2) # mala dvojka
+    g = Game.new(4,arr).deal
+    g.make_play(41)
+    g.make_play(36,g.find_take(36)[1])
+    expect(g.score(1)).to eq(1) # bez male
+  end 
 end
