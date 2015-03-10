@@ -61,10 +61,8 @@ class Game < ActiveRecord::Base
     result.each do |res|
       taken << [] 
       res.each do |r|
-        t.dup.each do |card_id|
-          if Game.tvalue(card_id) == r 
-            taken[taken.size-1] << t.delete(card_id)
-          end
+        t.each do |index_of_card|
+          taken[taken.size-1] << t.delete_at(index_of_card)
         end  
       end
     end 
@@ -81,6 +79,7 @@ class Game < ActiveRecord::Base
     4.times do
       @talon << @cards.delete_at(0)
     end
+    self
   end
 
   def make_play(move,take=[]) 
@@ -128,6 +127,14 @@ class Game < ActiveRecord::Base
     (move - @num_of_players*6 - 4) % 4
   end
   
+  def state_for_player(player) 
+    st = {
+      :hand => @hands[player].dup,
+      :moves => @moves.dup,
+      :talon => @talon.dup
+    }
+    st
+  end
   
   def state
     hands = [] 

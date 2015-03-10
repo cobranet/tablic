@@ -23,7 +23,32 @@ RSpec.describe Game, :type => :model do
     g.deal
     g.state 
   end
+  
+  
+  it "there is ai function which return all posible sums from array to first param" do
+    AI.find_take(7,[4,3,4,3]).each do |x| 
+      expect ([[2,3],[0,3],[0,1],[2,1]].include?(x))
+    end
 
+    AI.find_take(8,[4,3,4,3]).each do |x| 
+      expect ([[0,2]].include?(x))
+    end
+
+    AI.find_take(12,[4,4,4,3]).each do |x| 
+      expect ([[0,1,2]].include?(x))
+    end
+
+    AI.find_take(10,[4,4,4,3]).each do |x| 
+      expect ([[]].include?(x))
+    end
+
+    AI.find_take(10,[4,2,4,6]).each do |x| 
+      expect ([[0,3],[0,1,2],[2,3]].include?(x))
+    end
+
+    
+  end
+  
   it "can return what to take from talon" do
     g = Game.new(4,arr)
     g.deal
