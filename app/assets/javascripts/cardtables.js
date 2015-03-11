@@ -99,10 +99,10 @@ var CP = ( function(){
 		     stacks = result;
 		     moves = [];
 		     for (var i=0; i < stacks.length; i++) {
-			 alert(stacks[i].name);
 			 moves.push({action: "create_stack", params: [stacks[i].name, stacks[i].type,stacks[i].x,stacks[i].y,stacks[i].dif]});
 		     }
 		     CP.play(moves,10);	 
+		     CP.get_table_data();
 		 },
 		 error: function (){
 		     window.alert("something wrong!");
@@ -118,13 +118,10 @@ var CP = ( function(){
 		 success: function (result) {
 		     moves = [];
 		     for (var i=0; i < result.hands.length; i++) {
-			 moves.push({action: "create_stack", params: ["hand" + i, "V",30+i*100,30,40]});
 			 for (var c = 0; c < result.hands[i].length; c++){
-			     
 			     moves.push({action: "add_card_to_stack", params: ["hand" + i, result.hands[i][c],true]});			     
 			 }
 		     }
-		     moves.push({action:"create_stack",params: ["talon","H",500,30,40]});
 		     for (var i=0; i < result.talon.length; i++){
 			     moves.push({action: "add_card_to_stack", params: ["talon", result.talon[i],true]});			     
 		     }	 
@@ -136,151 +133,6 @@ var CP = ( function(){
 		 }});
 	     	     
 	 },	 
-
-	 get_passians_data: function(){
-	     return { moves:
-		      [{
-			  action: "create_stack",
-			  params: ["draw","0",30,30,20] },
-		       {
-			  action: "add_card_to_stack",
-			  params: ["draw",53,true] },
-		       {
-			  action: "create_stack",
-			  params: ["col1","V",200,30,20] },
-		       {  
-			  action: "add_card_to_stack",
-			  params: ["col1",12,true] },
-		       {
-			  action: "create_stack",
-			  params: ["col2","V",300,30,20] },
-		       {  
-			  action: "add_card_to_stack",
-			  params: ["col2",53,true] },
-		       {  
-			  action: "add_card_to_stack",
-			  params: ["col2",44,true] },
-		       {
-			  action: "create_stack",
-			  params: ["col3","V",400,30,20] },
-		       {  
-			  action: "add_card_to_stack",
-			  params: ["col3",53,true] },
-		       {  
-			  action: "add_card_to_stack",
-			  params: ["col3",53,true] },
-		       {  
-			  action: "add_card_to_stack",
-			  params: ["col3",1,true] },
-       		       {
-			  action: "create_stack",
-			  params: ["col4","V",500,30,20] },
-		       {  
-			  action: "add_card_to_stack",
-			  params: ["col4",53,true] },
-		       {  
-			  action: "add_card_to_stack",
-			  params: ["col4",53,true] },
-		       {  
-			  action: "add_card_to_stack",
-			  params: ["col4",53,true] },
-		       {  
-			  action: "add_card_to_stack",
-			   params: ["col4",16,true] },
-		       {
-			  action: "create_stack",
-			  params: ["col5","V",600,30,20] },
-		       {
-			  action: "add_cards_to_stack",
-			  params: ["col5",[53,53,53,53,2],true] },
-		       {
-			  action: "create_stack",
-			  params: ["col6","V",700,30,20] },
-		       {
-			  action: "add_cards_to_stack",
-			  params: ["col6",[53,53,53,53,53,32],true] },
-		       {
-			  action: "create_stack",
-			  params: ["col7","V",800,30,20] },
-		       {
-			  action: "add_cards_to_stack",
-			  params: ["col7",[53,53,53,53,53,53,41],true] },
-       		       {
-			   action: "from_stack_move",
-			   params: ["col4",3,"col7"]},
-
-		       {   action: "move_stack",
-			   params: ["col7",800,130]},
-
-		       {   action: "move_stack",
-			   params: ["col7",800,30]},
-       		       {
-			   action: "flip_card",
-			   params: ["col4",2,44]},
-       		       {
-			   action: "from_stack_move",
-			   params: ["col4",2,"col6"]},
-		       {
-			   action: "flip_card",
-			   params: ["col4",1,45]},
-       		       {
-			  action: "create_stack",
-			  params: ["draw_open","0",120,30,20] },	       
-		       {
-			   action: "add_card_to_stack",
-			   params: ["draw",53]},
-       		       
-		       {
-			   action: "flip_card",
-			   params: ["draw",1,17]},
-       		       {
-			   action: "from_stack_move",
-			   params: ["draw",1,"draw_open"]},
-       		       {
-			  action: "create_stack",
-  			  params: ["up0","0",910,30] },
-       		       {
-			  action: "create_stack",
-  			  params: ["up1","0",910,150] },
-       		       {
-			  action: "create_stack",
-  			  params: ["up2","0",910,270] },
-       		       {
-			  action: "create_stack",
-  			  params: ["up3","0",910,390] },
-       		       {
-			   action: "from_stack_move",
-			   params: ["col3",2,"up0"]},
-       		       {
-			   action: "flip_card",
-			   params: ["col3",1,28]},
-       		       {
-			   action: "from_stack_move",
-			   params: ["draw_open",0,"up1"]},
-		       {
-			   action: "add_card_to_stack",
-			   params: ["draw",53]},
-		       {
-			   action: "flip_card",
-			   params: ["draw",1,51]},
-       		       {
-			   action: "from_stack_move",
-			   params: ["draw",1,"draw_open"]},
-       		       {
-			   action: "from_stack_move",
-			   params: ["col5",4,"up0"]},
-       		       {
-			   action: "flip_card",
-			   params: ["col5",3,29]},
-       		       {
-			   action: "from_stack_move",
-			   params: ["col3",1,"up1"]},
-       		       {
-			   action: "flip_card",
-			   params: ["col3",0,37]},
-
-		      ]};
-	 },
 	 insert_card_in_stack: function(stack_id,card_id,i){
 	     card = Cards.create_card(card_id);	     
 	     CP.stacks[stack_id].insert_card(i,card);
@@ -306,6 +158,5 @@ $(document).ready(function(){
      var table = CP.create_table(ele,5);
 //     CP.get_table_data();
     CP.get_stacks();
-
 
 });

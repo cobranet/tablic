@@ -92,8 +92,8 @@ class Card
 
   def initialize(id)
     @id = id
-    @suit_num =  (id-1)/13
-    @value_num =  (id-1) % 13
+    @suit_num =  (id)/13
+    @value_num =  (id) % 13
     @suit = @@SUITS[@suit_num]
     @value =@@VALUES[@value_num]
   end

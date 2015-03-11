@@ -78,8 +78,8 @@ var divs = [
 		 this.set_position(px,py,pz);
 	     },
 	     make_div: function() {
-		 if (this.card_id != 53 ) {
-		     return "<div class='card' id='" + this.element_id + "'>" + divs[card_id-1] +  "</div>";
+		 if (this.card_id != 52 ) {
+		     return "<div class='card' id='"  + this.element_id +"'>" + divs[card_id] +  "</div>";
 		 } else {
 		     return "<div class='card' id='" + this.element_id + "'>" + divs[52] +  "</div>";
 		 };
