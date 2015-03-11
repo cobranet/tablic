@@ -46,6 +46,10 @@ RSpec.describe Game, :type => :model do
     AI.find_take(10,[4,4,4,3]).each do |x| 
       expect ([[]].include?(x))
     end
+    
+    AI.find_take(7,[7,1]).each do |x|
+      expect([[7]].include?(x))
+    end
 
     AI.find_take(10,[4,2,4,6]).each do |x| 
       expect ([[0,3],[0,1,2],[2,3]].include?(x))
@@ -57,16 +61,14 @@ RSpec.describe Game, :type => :model do
   it "can return what to take from talon" do
     g = Game.new(4,arr)
     g.deal
-    expect(g.find_take(33)).to eq([[42,4]])
-    expect(g.find_take(21)).to eq([[44,42]])
-    expect(g.find_take(36)).to eq([[45,4]])
-    expect(g.find_take(25)).to eq([[42,45,4]])
+    expect(g.find_take(Card.ids("9C"))).to eq([[Card.ids("4C"),Card.ids("5S")]])
+    expect(g.find_take(Card.ids("7D"))).to eq([[Card.ids("7C")]])
   end
   
   it "when player play a card must reduce players hand " do
     g = Game.new(4,arr)
     g.deal
-    g.make_play(Card.ids("2S"))
+    g.make_play(Card.ids("7D"))
     expect(g.state[:hands][0].size).to eq(5)
     expect(g.state[:talon].size).to eq(5)
     expect(g.on_move).to eq(1)
@@ -75,9 +77,9 @@ RSpec.describe Game, :type => :model do
   it "when player play take a trick his taken stack be increased " do
     g = Game.new(4,arr)
     g.deal
-    g.make_play(Card.ids("2S"))
-    a = g.find_take(36)[0]
-    g.make_play(36,a)
+    g.make_play(Card.ids("3S"))
+    a = g.find_take(Card.ids("JH"))[0]
+    g.make_play(Card.ids("JH"),a)
     expect(g.state[:hands][0].size).to eq(5)
   end
   
@@ -95,12 +97,8 @@ RSpec.describe Game, :type => :model do
     g.num_of_players.times do |player|
       expect(g.score(player)).to eq(0) 
     end
-    g.make_play(41)
-    g.make_play(36,g.find_take(36)[0])
-    expect(g.score(1)).to eq(2) # mala dvojka
-    g = Game.new(4,arr).deal
-    g.make_play(41)
-    g.make_play(36,g.find_take(36)[1])
-    expect(g.score(1)).to eq(1) # bez male
+    g.make_play(Card.ids("3S"))
+    g.make_play(Card.ids("JH"),g.find_take(Card.ids("JH"))[0])
+    expect(g.score(1)).to eq(1) 
   end 
 end

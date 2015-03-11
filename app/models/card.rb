@@ -87,7 +87,7 @@ class Card
   end
 
   def self.ids(str_card) 
-    @@SHORT_SUITS.index(str_card[1])*13+@@VALUES.index(str_card[0]) + 1
+    @@SHORT_SUITS.index(str_card[1])*13+@@VALUES.index(str_card[0]) 
   end
 
   def initialize(id)

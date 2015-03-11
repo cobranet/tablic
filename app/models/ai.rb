@@ -48,7 +48,7 @@ class AI
         results << indexes
       end
       # we have more options ... we move one index on time
-      if node.size > 2  
+      if node.size > 1  
         node.each_with_index do |x,i|
           new_node = []
           node.each_with_index do |y,k|

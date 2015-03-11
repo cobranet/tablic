@@ -28,7 +28,7 @@ class GamesController < ApplicationController
                
                  
   def show
-    @game = Game.new(4)
+    @game = Game.new(4,Game.testArray)
     @game.deal
     respond_to do |format|
       format.html # show.html.erb
