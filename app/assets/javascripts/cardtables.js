@@ -9,12 +9,14 @@ var CP = ( function(){
 	     setTimeout(function(){ 
 		 CP[move.action].apply(CP,move.params);},time);	     
 	 },
+	 
 	 play: function(moves,time){
 	     for ( var i = 0; i< moves.length ; i++) {
 		 move = moves[i];
 		 CP.postopone(move,time);
 	     };
 	 },
+	 
 	 from_stack_move: function(stack_from,i,stack_to){
 	     card = CP.stacks[stack_from].cards[i];
 	     CP.move_card(stack_from,i,CP.stacks[stack_to].xnext,CP.stacks[stack_to].ynext,CP.stacks[stack_to].znext);
@@ -86,18 +88,39 @@ var CP = ( function(){
 	 scale: function(x) {
 	     return x* (this.get_pxsize() / 5)
 	 },
+	 get_stacks: function(){
+	     $.ajax({
+		 type: "GET",
+		 contentType: "application/json; charset=utf-8",
+		 url: "/games/stacks",
+		 data : JSON.stringify({what:"stacks"}),
+		 dataType: "json",
+		 success: function (result) {
+		     stacks = result;
+		     moves = [];
+		     for (var i=0; i < stacks.length; i++) {
+			 alert(stacks[i].name);
+			 moves.push({action: "create_stack", params: [stacks[i].name, stacks[i].type,stacks[i].x,stacks[i].y,stacks[i].dif]});
+		     }
+		     CP.play(moves,10);	 
+		 },
+		 error: function (){
+		     window.alert("something wrong!");
+		 }});
+	 },
 	 get_table_data: function() {
 	     $.ajax({
 		 type: "GET",
 		 contentType: "application/json; charset=utf-8",
 		 url: "/games/1",
-		 data : JSON.stringify({name:"ravi",age:"31"}),
+		 data : JSON.stringify({what:"all"}),
 		 dataType: "json",
 		 success: function (result) {
 		     moves = [];
 		     for (var i=0; i < result.hands.length; i++) {
 			 moves.push({action: "create_stack", params: ["hand" + i, "V",30+i*100,30,40]});
 			 for (var c = 0; c < result.hands[i].length; c++){
+			     
 			     moves.push({action: "add_card_to_stack", params: ["hand" + i, result.hands[i][c],true]});			     
 			 }
 		     }
@@ -105,13 +128,15 @@ var CP = ( function(){
 		     for (var i=0; i < result.talon.length; i++){
 			     moves.push({action: "add_card_to_stack", params: ["talon", result.talon[i],true]});			     
 		     }	 
-		     CP.play(moves,1000);	 
+		     $('#string_rep').html(result.to_s);
+		     CP.play(moves,10);	 
 		 },
 		 error: function (){
 		     window.alert("something wrong!");
 		 }});
 	     	     
 	 },	 
+
 	 get_passians_data: function(){
 	     return { moves:
 		      [{
@@ -279,7 +304,8 @@ var CP = ( function(){
 $(document).ready(function(){
      var ele = $("#cardtable");
      var table = CP.create_table(ele,5);
-     CP.get_table_data();
+//     CP.get_table_data();
+    CP.get_stacks();
 
 
 });

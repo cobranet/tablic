@@ -13,7 +13,6 @@ class Game < ActiveRecord::Base
     end  
     if arr == nil 
       @cards.shuffle!
-      puts @cards.inspect
     else
       @cards = arr.dup
     end
@@ -154,7 +153,15 @@ class Game < ActiveRecord::Base
       end
       mov = mov + 1
     end
-    st = { :hands => hands.dup,
+
+    ret = ""
+    @num_of_players.times do |player| 
+       ret = ret + "PLAYER:[#{player}] : #{hands[player].map {|x| Card.new(x).to_s}.inspect}"
+       ret = ret + "TAKEN : #{taken[player].map { |x| Card.new(x).to_s}.inspect}" 
+    end
+    ret = ret + "TABLE  #{talon.map {|x| Card.new(x).to_s}.inspect}"    
+    st = { :to_s => ret,
+           :hands => hands.dup,
            :talon => talon.dup,
            :taken => taken.dup,
            :moves => @moves.dup}
