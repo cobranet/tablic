@@ -28,8 +28,63 @@ class AI
     end
     sum
   end   
-   
+  
   def self.find_take(move,talon) 
+    talons = self.all_talons_11(talon) 
+    res = []
+    talons.each do |t|
+      f = self.find_take1(move,t)
+      f.each do |item|
+        res << item unless res.include?(item)
+      end
+    end
+    res
+  end
+
+  def self.find_take1(move,talon)    
+    if move == 1 
+      a = self.find_take2(1,talon)
+      b = find_take2(11,talon)
+      b.each do |item|
+        a.push(item) unless a.include?(item)
+      end   
+      return  a
+    else
+      return self.find_take2(move,talon)
+    end  
+  end  
+  
+  def self.all_talons_11(talon) 
+    talons = [] 
+    talons << talon
+    replaced = []
+    talon.each_with_index do |x,i|
+      if x == 1 
+        t = talon.dup
+        t[i] = 11
+        talons << t
+        replaced.each do |x|
+          t = talon.dup
+          t[x] = 11
+          t[i] = 11
+          talons << t
+        end  
+        replaced << i
+      end
+    end  
+    if talon.select{|x| x==1}.size > 1
+      all = talon.dup
+      all.each_with_index do |x,i|
+        if x == 1 
+          all[i] = 11
+        end
+      end
+      talons << all
+    end
+    talons 
+  end
+  
+  def self.find_take2(move,talon) 
     que = []
     state = []
     talon.each_with_index do |val,index|
@@ -40,12 +95,12 @@ class AI
     while(que.size != 0) do  
       node = que.delete_at(0)
       # we find sum
-      if sum(node) == move 
+      if sum(node) == move  
         indexes = []
         node.each do |c|
-          indexes << c[1]
+          indexes << c[1] 
         end
-        results << indexes
+        results << indexes unless results.include?(indexes)
       end
       # we have more options ... we move one index on time
       if node.size > 1  

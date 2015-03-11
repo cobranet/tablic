@@ -1,5 +1,8 @@
 Tablic::Application.routes.draw do
   resources :games do
+    member do
+      post "make_play"
+    end
     collection do 
      get 'stacks'
     end

@@ -30,6 +30,7 @@ class GamesController < ApplicationController
   def show
     @game = Game.new(4,Game.testArray)
     @game.deal
+    @game.make_play(Card.ids("9D"),@game.find_take(Card.ids("9C"))[0])
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @game.state }
